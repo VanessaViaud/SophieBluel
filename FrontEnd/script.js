@@ -19,7 +19,6 @@ function generateGallery(works) {
     for (let i = 0; i < works.length; i++) {
         const figure = works[i];
         const figureElement = document.createElement("figure");
-        figureElement.dataset.id = figure.id;
         const imageElement = document.createElement("img");
         imageElement.src = figure.imageUrl;
         const nomElement = document.createElement("figcaption");
@@ -63,7 +62,8 @@ function createbutton(categories) {
     allButtonElement.innerText = "Tous"; 
     allButtonElement.id = "filtersButtons"; 
     filtersElement.appendChild(allButtonElement);
-    //creer les autres boutons à partir des categories
+
+    //creer les autres boutons à partir des categories et remplir le tableau des catégories dispo
     for (let j = 0; j < categories.length; j++) {
         const categorie = categories[j]; 
         availableCategories.push(categorie.id);
@@ -76,7 +76,7 @@ function createbutton(categories) {
         filtersElement.appendChild(buttonElement);
         
     }
-
+    //creer le filtre du bouton "tous" avec le nouveau tableau de l'ensemble des catégories dispo
     allButtonElement.addEventListener("click", function() {
         filterGallery(availableCategories);
     });
