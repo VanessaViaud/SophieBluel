@@ -129,8 +129,12 @@ li:hover {
 	display: flex;
 	justify-content: center;
 	gap: 10px;
+	margin-bottom: 20px;
 }
-.oneFilter {
+#allFilter,
+#objetsFilter,
+#appartFilter,
+#restauFilter {
 	border: 1px solid #1D6154;
 	border-radius: 60px;
 	color:#1D6154;
@@ -145,8 +149,14 @@ li:hover {
 	display: flex;
 	align-items: center;	
 }
-.oneFilter:hover,
-.oneFilter:active {
+#allFilter:hover,
+#objetsFilter:hover,
+#appartFilter:hover,
+#restauFilter:hover,
+#noFilter:active,
+#objetsFilter:active,
+#appartFilter:active,
+#restauFilter:active {
 	background-color: #1D6154;
 	color:white
 }
