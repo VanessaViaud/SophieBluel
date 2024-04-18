@@ -131,10 +131,7 @@ li:hover {
 	gap: 10px;
 	margin-bottom: 20px;
 }
-#allFilter,
-#objetsFilter,
-#appartFilter,
-#restauFilter {
+#filtersButtons {
 	border: 1px solid #1D6154;
 	border-radius: 60px;
 	color:#1D6154;
@@ -142,6 +139,7 @@ li:hover {
 	font-weight: 700;
 	font-size: 16px;
 	text-decoration: none;
+	background-color: white;
 	height: 37px;
 	box-sizing: border-box;
 	padding-left: 20px;
@@ -149,14 +147,8 @@ li:hover {
 	display: flex;
 	align-items: center;	
 }
-#allFilter:hover,
-#objetsFilter:hover,
-#appartFilter:hover,
-#restauFilter:hover,
-#noFilter:active,
-#objetsFilter:active,
-#appartFilter:active,
-#restauFilter:active {
+#filtersButtons:hover,
+#filtersButtons:active {
 	background-color: #1D6154;
 	color:white
 }

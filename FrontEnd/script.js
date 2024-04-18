@@ -10,6 +10,7 @@ async function getWorks() {
     const worksResponse = await fetch("http://localhost:5678/api/works");
     works = await worksResponse.json();
 
+    createbutton(categories);
     generateGallery(works);
 }
     //créer fonction qui génère les works (img + title)
@@ -50,26 +51,36 @@ function filterGallery(categorie) {
     // 3: rappeler generateGallery avec notre nouveau tableau de works
     generateGallery(filteredWorks);
 }
+    //générer mes boutons à partir des categories
+function createbutton(categories) {
+    const filtersElement = document.querySelector(".filters");
 
-    //récupérer les boutons html
-    const objetButton = document.getElementById("objetsFilter");
-    const appartButton = document.getElementById("appartFilter");
-    const restauButton = document.getElementById("restauFilter");
-    const allButton = document.getElementById("allFilter");
+    // creer le tableau des categories dispo
+    const availableCategories = []
 
-    //créer les écouteurs et relancer la fonction de filtre
-    objetButton.addEventListener("click", function() {
-        filterGallery([1]);
+    // creer le bouton "tous"
+    const allButtonElement = document.createElement("button");
+    allButtonElement.innerText = "Tous"; 
+    allButtonElement.id = "filtersButtons"; 
+    filtersElement.appendChild(allButtonElement);
+    //creer les autres boutons à partir des categories
+    for (let j = 0; j < categories.length; j++) {
+        const categorie = categories[j]; 
+        availableCategories.push(categorie.id);
+        const buttonElement = document.createElement("button");
+        buttonElement.innerText = categorie.name; 
+        buttonElement.id = "filtersButtons"; 
+        buttonElement.addEventListener("click", function() {
+            filterGallery([categorie.id]);
+        });
+        filtersElement.appendChild(buttonElement);
+        
+    }
+
+    allButtonElement.addEventListener("click", function() {
+        filterGallery(availableCategories);
     });
-    appartButton.addEventListener("click", function() {
-        filterGallery([2]);
-    });
-    restauButton.addEventListener("click", function() {
-        filterGallery([3]);
-    });
-    allButton.addEventListener("click", function() {
-        filterGallery([1,2,3]);
-        //generateGallery(works);
-    });
+
+}
 
 getWorks();
