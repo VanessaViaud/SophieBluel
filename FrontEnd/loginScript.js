@@ -23,16 +23,26 @@ function sendLogin() {
         })
         .then(response => {
             if (response.ok) {
-                // vers index si ok
-                window.location.href = "index.html";
+                // je récupère mon token d'authentification depuis la réponse
+                return response.json();
             } else {
-                // message d'erreur
-                alert("Votre Email et/ou votre Mot de passe sont incorrects. Veuillez réessayer");
+                // sinon message d'erreur
+                alert("Votre email et/ou votre mot de passe sont incorrects. Veuillez réessayer.");
+                throw new Error("Erreur de connexion");
             }
+        })
+        .then(data => {
+            // je stocke mon token dans le localStorage (quid session storage ou cookie???)
+            localStorage.setItem("authToken", data.token);
+            
+            // et j'ouvre mon index.html
+            window.location.href = "index.html";
         })
         .catch(error => {
             console.error("Erreur lors de la requête:", error);
         });
     });
 }
-sendLogin()
+
+// j'appelle ma fonction sendLogin
+sendLogin();
