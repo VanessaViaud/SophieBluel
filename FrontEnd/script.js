@@ -12,6 +12,8 @@ async function getWorks() {
 
     createbutton(categories);
     generateGallery(works);
+    renderEditionMode();
+    
 }
     //créer fonction qui génère les works (img + title)
 function generateGallery(works) {
@@ -83,3 +85,23 @@ function createbutton(categories) {
 
 }
 getWorks();
+
+export function editorView() {
+    window.location.href = "index.html";    
+}
+
+function renderEditionMode() {
+    if(localStorage.getItem("authToken") !== null) {
+        const subHeaderSection = document.createElement("section");
+        subHeaderSection.className = "subHeader";
+        subHeaderSection.innerHTML = '<p><i class="fa-regular fa-pen-to-square"></i></p><p>Mode édition</p>';
+        const parentElement = document.querySelector("header");
+        parentElement.appendChild(subHeaderSection);
+    
+        const modifierEditorDiv = document.createElement("div");
+        modifierEditorDiv.className = "ModifierEditor";
+        modifierEditorDiv.innerHTML = '<p><i class="fa-regular fa-pen-to-square"></i></p><p>Modifier</p>';
+        const SdParentElement = document.querySelector(".titleProjets");
+        SdParentElement.appendChild(modifierEditorDiv) 
+    }
+}

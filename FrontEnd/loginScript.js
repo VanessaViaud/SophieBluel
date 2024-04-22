@@ -3,7 +3,7 @@ function sendLogin() {
     formLogin.addEventListener("submit", function (event) {
         event.preventDefault();
 
-        // je récupère les valeurs des champs du formulaire
+        // je récupère les valeurs des schamps du formulaire
         const email = document.getElementById("email").value;
         const password = document.getElementById("password").value;
 
@@ -31,10 +31,10 @@ function sendLogin() {
             }
         })
         .then(data => {
-            // je stocke mon token dans le localStorage (quid session storage ou cookie???)
-            localStorage.setItem("authToken", data.token);
-            
-            // et j'ouvre mon index.html
+            if(data.token !== null) {
+                // je stocke mon token dans le localStorage
+               localStorage.setItem("authToken", data.token);
+            }
             window.location.href = "index.html";
         })
     });

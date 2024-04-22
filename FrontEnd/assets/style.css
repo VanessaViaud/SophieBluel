@@ -25,7 +25,7 @@ time, mark, audio, video {
 }
 /* HTML5 display-role reset for older browsers */
 article, aside, details, figcaption, figure,
-footer, header, hgroup, menu, nav, section {
+footer, hgroup, menu, nav, section {
 	display: block;
 }
 body {
@@ -49,22 +49,30 @@ table {
 /** end reset css**/
 body {
 	max-width: 1140px;
-	margin:auto;
+	margin:none;
 	font-family: 'Work Sans' ;
 	font-size: 14px;
-	background-color: #FFFEF8;
+	background-color:#FFFEF8;
 }
-
-header {
+.subHeader {
+	background-color: black;
+	color: white;
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	gap: 15px;
+	padding: 1em 0 1em 0;
+	width: 100%;
+}
+.inHeader {
 	display: flex;
 	justify-content: space-between;
-	margin: 50px 0
+	margin: 1em 100px 0 100px;
+	margin-bottom: 30px;
 }
 
 main {
-	width: 80%;
-	margin-left: 80px;
-	margin-right: 80px;
+	margin: 0 150px 0 150px;
 	display: flex;
 	justify-content: center;
 	flex-direction: column;
@@ -143,9 +151,19 @@ nav img {
 #introduction p {
 	margin-bottom: 0.5em;
 }
-#portfolio h2 {
-	text-align: center;
+
+.titleProjets {
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
 	margin-bottom: 1em;
+	gap : 15px;
+	margin-bottom: 3em;
+}
+.ModifierEditor {
+	display: flex;
+	align-items: center;
+	gap: 15px;
 }
 .filters {
 	display: flex;
@@ -200,6 +218,7 @@ nav img {
 #contact h2,
 #login h2{
 	margin-bottom: 20px;
+	margin-top: 70px;
 }
 
 #contact form,
@@ -246,10 +265,12 @@ input[type="submit"]{
 
 footer {
 	height:60px;
+	background-color: white;
+	padding: 1em 0 1em 0;
+	box-sizing: border-box;
 }
 footer nav ul {
 	display: flex;
 	justify-content: flex-end;
-	margin: 2em
 }
 

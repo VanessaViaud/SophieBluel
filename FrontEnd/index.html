@@ -7,20 +7,28 @@
 	<link rel="preconnect" href="https://fonts.googleapis.com">
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 	<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Work+Sans&display=swap" rel="stylesheet">
-	<meta name="description" content="">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css"
+        integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w=="
+        crossorigin="anonymous" referrerpolicy="no-referrer">	<meta name="description" content="">
 	<link rel="stylesheet" href="./assets/style.css">
 </head>
 <body>
 <header>
-	<h1>Sophie Bluel <span>Architecte d'intérieur</span></h1>
-	<nav>
-		<ul>
-			<li><a href="#portofolio">projets</a></li>
-			<li><a href="#contact">contact</a></li>
-			<li><a href="login.html">login</a></li>
-			<li><img src="./assets/icons/instagram.png" alt="Instagram"></li>
-		</ul>
-	</nav>
+	<!--<section class="subHeader">
+		<p><i class="fa-regular fa-pen-to-square"></i></p>
+		<p>Mode édition</p>
+	</section>-->
+	<section class="inHeader">
+		<h1>Sophie Bluel <span>Architecte d'intérieur</span></h1>
+		<nav>
+			<ul>
+				<li><a href="#portofolio">projets</a></li>
+				<li><a href="#contact">contact</a></li>
+				<li><a href="login.html">login</a></li>
+				<li><img src="./assets/icons/instagram.png" alt="Instagram"></li>
+			</ul>
+		</nav>
+	</section>
 </header>
 <main>
 	<section id="introduction">
@@ -35,7 +43,13 @@
 		</article>
 	</section>
 	<section id="portfolio">
-		<h2>Mes Projets</h2>
+		<div class="titleProjets">
+			<h2>Mes Projets</h2>
+			<!--<div class="ModifierEditor">
+				<p><i class="fa-regular fa-pen-to-square"></i></p>
+				<p>Modifier</p>
+			</div>-->
+		</div>
 		<div class="filters">
 			<!--cf script-->
 		</div>
@@ -64,6 +78,6 @@
 		</ul>
 	</nav>
 </footer>
-<script src="script.js" defer></script>
+<script type=module src="script.js" defer></script>
 </body>
 </html>
