@@ -28,7 +28,6 @@ function sendLogin() {
             } else {
                 // sinon message d'erreur
                 alert("Votre email et/ou votre mot de passe sont incorrects. Veuillez réessayer.");
-                throw new Error("Erreur de connexion");
             }
         })
         .then(data => {
@@ -38,9 +37,6 @@ function sendLogin() {
             // et j'ouvre mon index.html
             window.location.href = "index.html";
         })
-        .catch(error => {
-            console.error("Erreur lors de la requête:", error);
-        });
     });
 }
 
