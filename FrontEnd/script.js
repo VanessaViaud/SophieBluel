@@ -37,7 +37,7 @@ function filterGallery(categorie) {
     galleryElement.innerHTML = "";
 
     // 1: récupérer nos works
-    const filteredWorks = [];
+    let filteredWorks = [];
 
     // 2: filter nos works par rapport à la categoryId donnée en entrée
     let currentWork;
@@ -82,5 +82,4 @@ function createbutton(categories) {
     });
 
 }
-
 getWorks();

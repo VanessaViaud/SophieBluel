@@ -24,13 +24,13 @@
 </header>
 <main>
     <section id="login">
-        <h2 id="login">Log In</h2>
+        <h2>Log In</h2>
             <form action="#" method="post">
                 <label for="email">E-mail</label>
-                <input type="email" name="email" id="email">
-                <label for="mdp">Mot de passe</label>
-                <input type="password" name="mdp" id="mdp"></input>
-                <input type="submit" value="Se connecter">
+                <input type="email" name="email" id="email" required>
+                <label for="password">Mot de passe</label>
+                <input type="password" name="password" id="password" required>
+                <input type="submit" id="submit" value="Se connecter">
             </form>
     </section>
     <a id=forgotpassword href="#">Mot de passe oublié</a>
@@ -42,6 +42,6 @@
 		</ul>
 	</nav>
 </footer>
-<script src="script.js" defer></script>
+<script src="loginScript.js" defer></script>
 </body>
 </html>
