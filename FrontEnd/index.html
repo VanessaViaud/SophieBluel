@@ -13,6 +13,7 @@
 	<link rel="stylesheet" href="./assets/style.css">
 </head>
 <body>
+<div class="overlay" style="display: block;">
 <header>
 	<!--<section class="subHeader">
 		<p><i class="fa-regular fa-pen-to-square"></i></p>
@@ -24,7 +25,7 @@
 			<ul>
 				<li><a href="#portofolio">projets</a></li>
 				<li><a href="#contact">contact</a></li>
-				<li><a href="login.html">login</a></li>
+				<li id="loginLink"><a href="login.html">login</a></li>
 				<li><img src="./assets/icons/instagram.png" alt="Instagram"></li>
 			</ul>
 		</nav>
@@ -46,8 +47,7 @@
 		<div class="titleProjets">
 			<h2>Mes Projets</h2>
 			<!--<div class="ModifierEditor">
-				<p><i class="fa-regular fa-pen-to-square"></i></p>
-				<p>Modifier</p>
+				<button type=button><i class="fa-regular fa-pen-to-square"></i> Modifier</button>
 			</div>-->
 		</div>
 		<div class="filters">
@@ -69,6 +69,18 @@
 			<textarea name="message" id="message" cols="30" rows="10"></textarea>
 			<input type="submit" value="Envoyer">
 		</form>
+	</section>
+</div>
+	<section id="modal1" class="modal" style="display: none;">
+		<div class="modal-content">
+			<div class="modal-content-close">
+				<button id="modalClose"><i class="fa-solid fa-xmark"></i></button>
+			</div>
+			<h3 class="modalTitle">Galerie Photo</h3>
+			<div class="modalFooter">
+				<button class="modalAddPhoto">Ajouter une photo</button>
+			</div>
+		</div>
 	</section>
 </main>
 <footer>

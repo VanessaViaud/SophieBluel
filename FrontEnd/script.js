@@ -100,8 +100,42 @@ function renderEditionMode() {
     
         const modifierEditorDiv = document.createElement("div");
         modifierEditorDiv.className = "ModifierEditor";
-        modifierEditorDiv.innerHTML = '<p><i class="fa-regular fa-pen-to-square"></i></p><p>Modifier</p>';
+
+        const modifierEditorButton = document.createElement("button");
+        modifierEditorButton.id = "openModalButton";
+        modifierEditorButton.innerHTML = '<i class="fa-regular fa-pen-to-square"></i> Modifier';
+        modifierEditorButton.addEventListener("click", openModal);
+        modifierEditorDiv.appendChild(modifierEditorButton);
+        
+        
         const SdParentElement = document.querySelector(".titleProjets");
-        SdParentElement.appendChild(modifierEditorDiv) 
-    }
+        SdParentElement.appendChild(modifierEditorDiv);        
+
+        };
+     if(localStorage.getItem("authToken") !== null) {
+        const logLink = document.getElementById("#loginLink");
+        logLink.innerHTML = "Logout";
+        }
+        logLink.innerHTML = "Login";
 }
+
+const openModal = function (e){
+    e.preventDefault();
+    const modal = document.querySelector("#modal1");
+    modal.style.display = 'flex';
+    document.querySelector("#modalClose").addEventListener("click", closeModal);
+    modal.addEventListener("click", closeModal)
+}
+
+const closeModal = function (e) {
+    e.preventDefault();
+    const modal = document.querySelector("#modal1");
+    modal.style.display = 'none';
+    modal.removeEventListener("click", closeModal)
+    document.querySelector("#modalClose").removeEventListener("click", closeModal);
+}
+
+const stopPropagation = function (e) {
+    e.stopPropagation()
+}
+
