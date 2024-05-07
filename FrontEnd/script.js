@@ -23,6 +23,7 @@ function generateGallery(works) {
     for (let i = 0; i < works.length; i++) {
         const figure = works[i];
         const figureElement = document.createElement("figure");
+        figureElement.id = "work-" + figure.id;
         const imageElement = document.createElement("img");
         imageElement.src = figure.imageUrl;
         const nomElement = document.createElement("figcaption");
@@ -37,11 +38,11 @@ function generateGallery(works) {
 //créer fonction qui génère les works dans la modal
 function generateGalleryModal(works) {
     const galleryModalElement = document.querySelector(".gallery-modal");
-    galleryModalElement.innerHTML = "";
 
     for (let i = 0; i < works.length; i++) {
         const figure = works[i];
         const figureElement = document.createElement("figure");
+        figureElement.id = "modal-work-" + figure.id;
         const imageElement = document.createElement("img");
         imageElement.src = figure.imageUrl;
 
@@ -50,7 +51,16 @@ function generateGalleryModal(works) {
         trashElement.innerHTML = '<i class="fa-solid fa-trash-can"></i>';
         trashElement.addEventListener("click", function (e) {
             e.preventDefault();
-            deleteWork(works[i].id, e);
+           // si deleteWork a bien marché
+            if (deleteWork(figure.id, e)) {
+                //on supprime le work de la modal
+                figureElement.parentNode.removeChild(figureElement);
+                //et on supprime en dessous aussi
+                const workFigure = document.getElementById("work-" + figure.id);
+                workFigure.parentNode.removeChild(workFigure);
+            } else {
+
+            };
         });
 
         galleryModalElement.appendChild(figureElement);
@@ -59,21 +69,26 @@ function generateGalleryModal(works) {
     }
 }
 
-// fonction pour supprimer un work à partir de l'id
+//fonction pour supprimer un work à partir de l'id
 async function deleteWork(id, e) {
     e.preventDefault();
     const authToken = localStorage.getItem("authToken")
-    const deleteResponse = await fetch("http://localhost:5678/api/works/"+id, 
+    console.log("avant await fetch");
+    const deleteResponse = await fetch ("http://localhost:5678/api/works/"+id, 
     {
         method: "DELETE",
         headers: {
             Authorization: "Bearer " + authToken
-        }
+        },
     });
-    generateGalleryModal();
-    deleted = await deleteResponse.json();
-    await getWorks();
-
+    if(deleteResponse.ok) {
+        return true;
+    }
+    return false;
+    // //generateGalleryModal();
+    // console.log("avant await json");
+    // //await getWorks();
+    // console.log("ju delete completed");
 }
 
 //créer fonction filtre selon categorie
@@ -131,10 +146,6 @@ function createbutton(categories) {
 }
 getWorks();
 
-export function editorView() {
-    window.location.href = "index.html";    
-}
-
 //créer fonction pour générer le Mode Edition
 function renderEditionMode() {
     if(localStorage.getItem("authToken") !== null) {
@@ -163,7 +174,15 @@ function renderEditionMode() {
     if(localStorage.getItem("authToken") !== null) {
         const logLink = document.getElementById("loginLink");
         logLink.innerHTML = "logout";
-        }
+        logLink.setAttribute("href", "index.html");
+        logLink.addEventListener("click", function() {
+            viderLocalStorage();
+        })
+    }
+}
+//créer une fonction pour vider le local storage
+function viderLocalStorage() {
+    localStorage.removeItem("authToken");
 }
 
 const openModal = function (e){
@@ -173,6 +192,8 @@ const openModal = function (e){
     modal.addEventListener("click", closeModal);
     modal.querySelector("#modalClose").addEventListener("click", closeModal);
     modal.querySelector(".modal-content").addEventListener("click", stopPropagation);
+
+    document.body.classList.add("modal-open")
 }
 
 const closeModal = function (e) {
@@ -182,6 +203,8 @@ const closeModal = function (e) {
     modal.removeEventListener("click", closeModal)
     modal.querySelector("#modalClose").removeEventListener("click", closeModal);
     modal.querySelector(".modal-content").removeEventListener("click", stopPropagation);
+
+    document.body.classList.remove("modal-open")
 }
 
 const stopPropagation = function (e) {

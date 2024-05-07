@@ -23,6 +23,7 @@ time, mark, audio, video {
 	font: inherit;
 	vertical-align: baseline;
 }
+
 /* HTML5 display-role reset for older browsers */
 article, aside, details, figcaption, figure,
 footer, hgroup, menu, nav, section {
@@ -46,6 +47,7 @@ table {
 	border-collapse: collapse;
 	border-spacing: 0;
 }
+
 /** end reset css**/
 body {
 	margin:0;
@@ -53,6 +55,9 @@ body {
 	font-family: 'Work Sans' ;
 	font-size: 14px;
 	background-color:#FFFEF8;
+}
+.modal-open {
+    overflow: hidden;
 }
 header {
 	display: flex;
@@ -68,7 +73,6 @@ header {
 	gap: 15px;
 	padding: 1em 0 1em 0;
 	width: 100%;
-
 }
 .inHeader {
 	display: flex;
@@ -76,15 +80,12 @@ header {
 	margin: 1em 100px 0 100px;
 	margin-bottom: 30px;
 }
-
 main {
 	margin: 0 250px 0 250px;
 	display: flex;
 	justify-content: center;
 	flex-direction: column;
-
 }
-
 h1{
 	display: flex;
 	flex-direction: column;
@@ -93,40 +94,33 @@ h1{
 	font-weight: 800;
 	color: #B1663C
 }
-
 h1 > span {
 	font-family: 'Work Sans';
 	font-size:10px;
 	letter-spacing: 0.1em;
 }
-
 h2{
 	font-family: 'Syne';
 	font-weight: 700;
 	font-size: 30px;
 	color: #1D6154
 }
-
 nav ul {
 	display: flex;
 	align-items: center;
 	list-style-type: none;
 }
-
 nav li {
 	padding: 0 25px;
 	font-size: 1.2em;
 }
-
 nav a {
 	color: black;
 	text-decoration: none;
 }
-
 .login-active {
 	font-weight: bold;
 }
-
 nav img {
 	height: 22px;
 	width: 22px;
@@ -144,7 +138,6 @@ nav img {
 	margin: 0px;
 	width: 80%;
 }
-
 #introduction article {
 	flex: 1
 }
@@ -155,7 +148,6 @@ nav img {
 #introduction p {
 	margin-bottom: 0.5em;
 }
-
 .titleProjets {
 	display: flex;
 	flex-direction: row;
@@ -206,31 +198,24 @@ nav img {
 	grid-column-gap: 20px;
 	grid-row-gap: 20px;
 }
-
 .gallery img {
 	width: 100%;
 
 }
-
-
-
 #contact,
 #login {
 	width: 50%;	
 	margin: auto;
 }
-
 #contact > *,
 #login > * {
 	text-align: center;
-
 }
 #contact h2,
 #login h2{
 	margin-bottom: 20px;
 	margin-top: 70px;
 }
-
 #contact form,
 #login form {
 	text-align: left;
@@ -238,7 +223,6 @@ nav img {
 	display: flex;
 	flex-direction: column;
 }
-
 #contact input,
 #login input {
 	height: 50px;
@@ -254,7 +238,6 @@ nav img {
 	border: none;
 	box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.09);
 }
-
 input[type="submit"]{
 	font-family: 'Syne';
 	font-weight: 700;
@@ -265,14 +248,12 @@ input[type="submit"]{
 	text-align: center;
 	border-radius: 60px ;
 }
-
 #forgotpassword {
 	display: flex;
 	justify-content: center;
 	color: black;
 	margin-bottom: 300px;
 }
-
 footer {
 	height:60px;
 	background-color: white;
@@ -283,7 +264,6 @@ footer nav ul {
 	display: flex;
 	justify-content: flex-end;
 }
-
 .modal {
 	position: fixed; /* Stay in place */
 	z-index: 1; /* Sit on top */
@@ -299,13 +279,12 @@ footer nav ul {
 	align-items: center;
 	justify-content: center;
 }
-
 .modal-content {
 	display: flex;
 	top: 50%;
 	left: 50%;
 	width: 630px;
-	height: 688px;
+	height: fit-content;
 	background-color: white;
 	border-radius: 10px;
 	z-index: 1;
@@ -313,18 +292,16 @@ footer nav ul {
 	flex-direction: column;
 	box-sizing: border-box;
 	justify-content: space-between;
+	gap: 30px;
 }
-
 .modal-content-close {
 	display: flex;
     flex-direction: row-reverse;
 }
-
 .modalTitle {
 	font-size: 26px;
 	text-align: center;
 }
-
 .gallery-modal {
 	width: 100%;
 	display: grid;
@@ -334,11 +311,9 @@ footer nav ul {
 	padding: 25px 85px 25px 85px;
 	box-sizing: border-box;
 }
-
 .gallery-modal img {
 	width: 100%;
 }
-
 .modal-trash-can {
 	padding: 3px;
 	color: white;
@@ -362,7 +337,6 @@ footer nav ul {
 	font-size: 14px;
 	font-family: syne;
 }
-
 #modalClose {
 	font-size: 24px;
 	border: none;
@@ -378,7 +352,6 @@ footer nav ul {
 	width: 100%;
 	align-items: center;
 }
-
 hr {
 	color: #b3b3b3;
 	size:1px;
