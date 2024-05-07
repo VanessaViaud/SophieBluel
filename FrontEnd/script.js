@@ -13,9 +13,7 @@ async function getWorks() {
     createbutton(categories);
     generateGallery(works);
     generateGalleryModal(works);
-    renderEditionMode();
-    addPhoto();
-}
+    renderEditionMode();}
 
 //créer fonction qui génère les works (img + title)
 function generateGallery(works) {
@@ -199,9 +197,15 @@ buttonAddPhoto.addEventListener("click", function() {
     const formAddPhoto = document.createElement("form");
         formAddPhoto.action = "#";
         formAddPhoto.method = "post";
+    const areaImgAddPhoto = document.createElement("div");
+        areaImgAddPhoto.className = "drop-area";
+        areaImgAddPhoto.id = "dropArea";
+        areaImgAddPhoto.innerHTML = '<i class="fa-regular fa-image"></i><br><p>jpg, png : 4mo max</p>';
     const imgAddPhoto = document.createElement("input");
         imgAddPhoto.type = "file";
         imgAddPhoto.name = "img";
+        imgAddPhoto.id = "img-add-photo";
+        imgAddPhoto.accept = "image/**";
         // imgAddPhoto.setAttribute("required");
     const labelTitleAddPhoto = document.createElement("label");
         labelTitleAddPhoto.for = "title-add-photo";
@@ -227,7 +231,8 @@ buttonAddPhoto.addEventListener("click", function() {
         validationAddPhoto.id = "modal-valider";
 
     formContentAddPhoto.appendChild(formAddPhoto);
-    formAddPhoto.appendChild(imgAddPhoto);
+    formAddPhoto.appendChild(areaImgAddPhoto);
+    areaImgAddPhoto.appendChild(imgAddPhoto);
     formAddPhoto.appendChild(labelTitleAddPhoto);
     formAddPhoto.appendChild(titleAddPhoto);
     formAddPhoto.appendChild(labelCategoryAddPhoto);
@@ -238,24 +243,77 @@ buttonAddPhoto.addEventListener("click", function() {
     
 });
     
-// créer la fonction pour ajouter des photos
-function addPhoto() {
-    // Autres opérations spécifiques à addPhoto
-}
+// Autres opérations spécifiques pour la zone de chargement des photos
+// const dropArea = document.getElementById("dropArea");
+
+// //const eventNames = ["dragenter", "dragover", "dragleave", "drop"]
+
+// // Gérer le glisser-déposer de fichiers
+// dropArea.addEventListener("drop", handleDrop, false);
+
+// // Gérer le dépôt de fichiers
+// function handleDrop(e) {
+//   const dt = e.dataTransfer;
+//   const files = dt.files;
+
+//   handleFiles(files);
+// }
+
+// // Gérer les fichiers après le dépôt
+// function handleFiles(files) {
+//   for (let i = 0; i < files.length; i++) {
+//     const file = files[i];
+//     if (isImage(file)) {
+//       uploadImage(file);
+//     } else {
+//       alert("Veuillez sélectionner une image.");
+//     }
+//   }
+// }
+
+// // Vérifier si le fichier est une image
+// function isImage(file) {
+//   return /^image\//.test(file.type);
+// }
+
+// // Télécharger l'image
+// function uploadImage(file) {
+//   const reader = new FileReader();
+
+//   reader.onload = function(e) {
+//     const img = new Image();
+//     img.src = e.target.result;
+
+//     // Afficher l'image téléchargée
+//     dropArea.innerHTML = "";
+//     dropArea.appendChild(img);
+//   }
+
+//   reader.readAsDataURL(file);
+// }
+
+// Gérer le téléchargement de fichiers via l'input de type file
+// const fileInput = document.getElementById("fileInput");
+// fileInput.addEventListener("change", function() {
+//   handleFiles(this.files);
+// });
+
 
 //et une fonction pour annuler les effets des modifs quand on ferme la modal 
-function resetModalState() {
-    buttonAddPhoto.style.display = "";
-    const galleryModalElement = document.querySelector(".gallery-modal");
-    galleryModalElement.style.display = "";
-    const formContentAddPhoto = document.querySelector(".form-modal");
-    formContentAddPhoto.style.display = 'none';
-    const modalTitle = document.querySelector(".modal-title");
-    modalTitle.innerHTML = "Galerie photo";
-    const inputInFooterModal = document.querySelector(".modal-footer input");
-    inputInFooterModal.style.display = 'none';
+// function resetModalState() {
+//     buttonAddPhoto.style.display = "";
+//     const galleryModalElement = document.querySelector(".gallery-modal");
+//     galleryModalElement.style.display = "";
+//     const formContentAddPhoto = document.querySelector(".form-modal");
+//     formContentAddPhoto.style.display = 'none';
+//     const modalTitle = document.querySelector(".modal-title");
+//     modalTitle.innerHTML = "Galerie photo";
+//     const inputInFooterModal = document.querySelector(".modal-footer input");
+//     inputInFooterModal.style.display = 'none';
+// }
+const stopPropagation = function (e) {
+    e.stopPropagation()
 }
-
 //créer une fonction pour ouvrir la modal
 function openModal (e) {
     e.preventDefault();
@@ -271,6 +329,7 @@ function openModal (e) {
     //et on ajoute une class au body pour empêcher le overlay scroll en arrière-plan
     document.body.classList.add("modal-open")
 }
+
 //créer une fonction pour fermer la modal
 function closeModal (e) {
     const modal = document.querySelector("#modal1");
@@ -284,10 +343,8 @@ function closeModal (e) {
     //2: la class attribuée au body,
     document.body.classList.remove("modal-open");
     //3: les modifs de la seconde version de la modal.
-    resetModalState();
+    //resetModalState()
 }
-const stopPropagation = function (e) {
-    e.stopPropagation()
-}
+
 
 
