@@ -63,7 +63,7 @@ header {
 	display: flex;
 	flex-direction: column-reverse;
 }
-.subHeader {
+.sub-header {
 	top:0;
 	background-color: black;
 	color: white;
@@ -74,14 +74,14 @@ header {
 	padding: 1em 0 1em 0;
 	width: 100%;
 }
-.inHeader {
+.in-header {
 	display: flex;
 	justify-content: space-between;
 	margin: 1em 100px 0 100px;
 	margin-bottom: 30px;
 }
 main {
-	margin: 0 250px 0 250px;
+	margin: 0 245px 0 245px;
 	display: flex;
 	justify-content: center;
 	flex-direction: column;
@@ -126,41 +126,46 @@ nav img {
 	width: 22px;
 }
 #introduction {
-	display: flex;
+	display: grid;
 	align-items: center;
 	margin: 5em 0 5em 0;
+	grid-template-columns: 1fr 1fr ;
+	gap: 72px;
 }
 #introduction figure {
-	flex: 1
+	width: fit-content;
 }
 #introduction img {
 	display: block;
 	margin: 0px;
-	width: 80%;
+	width: 100%;
 }
 #introduction article {
-	flex: 1
+	height: 80%;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
 }
 #introduction h2 {
 	margin-bottom: 1em;
 }
 
 #introduction p {
-	margin-bottom: 0.5em;
+	margin-bottom: 1em;
 }
-.titleProjets {
+.title-projets {
 	display: flex;
 	flex-direction: row;
 	justify-content: center;
 	gap : 15px;
 	margin: 5em 0 4em 0;
 }
-.ModifierEditor {
+.modifier-editor {
 	display: flex;
 	align-items: center;
 	gap: 15px;
 }
-.ModifierEditor button {
+.modifier-editor button {
 	border: none;
 	background-color: #FFFEF8;
 }
@@ -170,7 +175,7 @@ nav img {
 	gap: 10px;
 	margin-bottom: 20px;
 }
-#filtersButtons {
+#filters-buttons {
 	border: 1px solid #1D6154;
 	border-radius: 60px;
 	color:#1D6154;
@@ -186,8 +191,8 @@ nav img {
 	display: flex;
 	align-items: center;	
 }
-#filtersButtons:hover,
-#filtersButtons:active {
+#filters-buttons:hover,
+#filters-buttons:active {
 	background-color: #1D6154;
 	color:white
 }
@@ -248,7 +253,7 @@ input[type="submit"]{
 	text-align: center;
 	border-radius: 60px ;
 }
-#forgotpassword {
+#forgot-password {
 	display: flex;
 	justify-content: center;
 	color: black;
@@ -285,6 +290,7 @@ footer nav ul {
 	left: 50%;
 	width: 630px;
 	height: fit-content;
+	max-height: 688px;
 	background-color: white;
 	border-radius: 10px;
 	z-index: 1;
@@ -298,7 +304,7 @@ footer nav ul {
 	display: flex;
     flex-direction: row-reverse;
 }
-.modalTitle {
+.modal-title {
 	font-size: 26px;
 	text-align: center;
 }
@@ -310,6 +316,8 @@ footer nav ul {
 	grid-row-gap: 9px;
 	padding: 25px 85px 25px 85px;
 	box-sizing: border-box;
+	max-height: max-content;
+	overflow: scroll;
 }
 .gallery-modal img {
 	width: 100%;
@@ -323,12 +331,13 @@ footer nav ul {
 	border:none;
 	font-size: 10px;
 	border-radius: 2px;
-	position: absolute;
+	position: fixed;
 	z-index: 1;
 	margin-top: 6px;
 	margin-left: 55px;
 }
-.modalAddPhoto {
+.modal-add-photo,
+#modal-valider {
 	padding: 10px 50px 10px 50px;
 	color: white;
 	background-color: #1D6154;
@@ -337,14 +346,14 @@ footer nav ul {
 	font-size: 14px;
 	font-family: syne;
 }
-#modalClose {
+#modal-close {
 	font-size: 24px;
 	border: none;
 	background-color: white;
 	font-size: 24px;
 	color: black;
 }
-.modalFooter {
+.modal-footer {
 	display: flex;
 	flex-direction: column;
 	gap: 20px;

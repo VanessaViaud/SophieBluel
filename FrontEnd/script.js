@@ -14,6 +14,7 @@ async function getWorks() {
     generateGallery(works);
     generateGalleryModal(works);
     renderEditionMode();
+    addPhoto();
 }
 
 //créer fonction qui génère les works (img + title)
@@ -59,10 +60,11 @@ function generateGalleryModal(works) {
                 const workFigure = document.getElementById("work-" + figure.id);
                 workFigure.parentNode.removeChild(workFigure);
             } else {
-
+                //message d'erreur
+                alert("Une erreur s'est produite. Veuillez réessayer ultérieurement.");
             };
+ 
         });
-
         galleryModalElement.appendChild(figureElement);
         figureElement.appendChild(trashElement);
         figureElement.appendChild(imageElement);
@@ -85,10 +87,6 @@ async function deleteWork(id, e) {
         return true;
     }
     return false;
-    // //generateGalleryModal();
-    // console.log("avant await json");
-    // //await getWorks();
-    // console.log("ju delete completed");
 }
 
 //créer fonction filtre selon categorie
@@ -122,7 +120,7 @@ function createbutton(categories) {
     // creer le bouton "tous"
     const allButtonElement = document.createElement("button");
     allButtonElement.innerText = "Tous"; 
-    allButtonElement.id = "filtersButtons"; 
+    allButtonElement.id = "filters-buttons"; 
     filtersElement.appendChild(allButtonElement);
 
     //creer les autres boutons à partir des categories et remplir le tableau des catégories dispo
@@ -131,7 +129,7 @@ function createbutton(categories) {
         availableCategories.push(categorie.id);
         const buttonElement = document.createElement("button");
         buttonElement.innerText = categorie.name; 
-        buttonElement.id = "filtersButtons"; 
+        buttonElement.id = "filters-buttons"; 
         buttonElement.addEventListener("click", function() {
             filterGallery([categorie.id]);
         });
@@ -150,21 +148,21 @@ getWorks();
 function renderEditionMode() {
     if(localStorage.getItem("authToken") !== null) {
         const subHeaderSection = document.createElement("section");
-        subHeaderSection.className = "subHeader";
+        subHeaderSection.className = "sub-header";
         subHeaderSection.innerHTML = '<p><i class="fa-regular fa-pen-to-square"></i></p><p>Mode édition</p>';
         const parentElement = document.querySelector("header");
         parentElement.appendChild(subHeaderSection);
     
         const modifierEditorDiv = document.createElement("div");
-        modifierEditorDiv.className = "ModifierEditor";
+        modifierEditorDiv.className = "modifier-editor";
 
         const modifierEditorButton = document.createElement("button");
-        modifierEditorButton.id = "openModalButton";
+        modifierEditorButton.id = "open-modal-button";
         modifierEditorButton.innerHTML = '<i class="fa-regular fa-pen-to-square"></i> Modifier';
         modifierEditorButton.addEventListener("click", openModal);
         modifierEditorDiv.appendChild(modifierEditorButton);
         
-        const SdParentElement = document.querySelector(".titleProjets");
+        const SdParentElement = document.querySelector(".title-projets");
         SdParentElement.appendChild(modifierEditorDiv);        
         
         const filtersElement = document.querySelector(".filters");
@@ -172,7 +170,7 @@ function renderEditionMode() {
         };
         
     if(localStorage.getItem("authToken") !== null) {
-        const logLink = document.getElementById("loginLink");
+        const logLink = document.getElementById("login-link");
         logLink.innerHTML = "logout";
         logLink.setAttribute("href", "index.html");
         logLink.addEventListener("click", function() {
@@ -180,33 +178,114 @@ function renderEditionMode() {
         })
     }
 }
-//créer une fonction pour vider le local storage
+//créer une fonction pour vider le local storage quand on click sur logout
 function viderLocalStorage() {
     localStorage.removeItem("authToken");
 }
 
-const openModal = function (e){
+//créer modifs de la modal quand on clique sur Ajouter une photo
+const buttonAddPhoto = document.querySelector(".modal-add-photo");
+
+buttonAddPhoto.addEventListener("click", function() {
+    const modalTitle = document.querySelector(".modal-title");
+    modalTitle.innerHTML = "Ajout photo";
+    
+    buttonAddPhoto.style.display = 'none';
+    
+    const galleryModalElement = document.querySelector(".gallery-modal");
+    galleryModalElement.style.display = 'none';
+
+    const formContentAddPhoto = document.querySelector(".form-modal");
+    const formAddPhoto = document.createElement("form");
+        formAddPhoto.action = "#";
+        formAddPhoto.method = "post";
+    const imgAddPhoto = document.createElement("input");
+        imgAddPhoto.type = "file";
+        imgAddPhoto.name = "img";
+        // imgAddPhoto.setAttribute("required");
+    const labelTitleAddPhoto = document.createElement("label");
+        labelTitleAddPhoto.for = "title-add-photo";
+        labelTitleAddPhoto.innerHTML = "Titre";
+    const titleAddPhoto = document.createElement("input");
+        titleAddPhoto.type = "text";
+        titleAddPhoto.name = "title";
+        titleAddPhoto.id = "title-add-photo";
+        // titleAddPhoto.setAttribute("required");
+    const labelCategoryAddPhoto = document.createElement("label");
+        labelCategoryAddPhoto.for = "category-add-photo";
+        labelCategoryAddPhoto.innerHTML = "Catégorie";
+    const categoryAddPhoto = document.createElement("select");
+        categoryAddPhoto.name = "category";
+        categoryAddPhoto.id = "category-add-photo";
+        // categoryAddPhoto.setAttribute("required");
+    const optionAddPhoto = document.createElement("option");
+        optionAddPhoto.value = "numéro de catégorie";
+        optionAddPhoto.innerHTML = "titre de catégorie";
+    const validationAddPhoto = document.createElement("input");
+        validationAddPhoto.value = "Valider";
+        validationAddPhoto.type = "submit";
+        validationAddPhoto.id = "modal-valider";
+
+    formContentAddPhoto.appendChild(formAddPhoto);
+    formAddPhoto.appendChild(imgAddPhoto);
+    formAddPhoto.appendChild(labelTitleAddPhoto);
+    formAddPhoto.appendChild(titleAddPhoto);
+    formAddPhoto.appendChild(labelCategoryAddPhoto);
+    formAddPhoto.appendChild(categoryAddPhoto);
+    categoryAddPhoto.appendChild(optionAddPhoto);
+    const footerModal = document.querySelector(".modal-footer");
+    footerModal.appendChild(validationAddPhoto);
+    
+});
+    
+// créer la fonction pour ajouter des photos
+function addPhoto() {
+    // Autres opérations spécifiques à addPhoto
+}
+
+//et une fonction pour annuler les effets des modifs quand on ferme la modal 
+function resetModalState() {
+    buttonAddPhoto.style.display = "";
+    const galleryModalElement = document.querySelector(".gallery-modal");
+    galleryModalElement.style.display = "";
+    const formContentAddPhoto = document.querySelector(".form-modal");
+    formContentAddPhoto.style.display = 'none';
+    const modalTitle = document.querySelector(".modal-title");
+    modalTitle.innerHTML = "Galerie photo";
+    const inputInFooterModal = document.querySelector(".modal-footer input");
+    inputInFooterModal.style.display = 'none';
+}
+
+//créer une fonction pour ouvrir la modal
+function openModal (e) {
     e.preventDefault();
     const modal = document.querySelector("#modal1");
     modal.style.display = 'flex';
+    //fermer la modal quand on clique dessus...
     modal.addEventListener("click", closeModal);
-    modal.querySelector("#modalClose").addEventListener("click", closeModal);
+    //...sauf si on clique à l'intérieur
     modal.querySelector(".modal-content").addEventListener("click", stopPropagation);
+    //fermer la modal quand on clique sur la croix
+    modal.querySelector("#modal-close").addEventListener("click", closeModal);
 
+    //et on ajoute une class au body pour empêcher le overlay scroll en arrière-plan
     document.body.classList.add("modal-open")
 }
-
-const closeModal = function (e) {
+//créer une fonction pour fermer la modal
+function closeModal (e) {
     const modal = document.querySelector("#modal1");
     e.preventDefault();
     modal.style.display = 'none';
+    //et on retire :
+    //1: les écouteurs de cliques de fermeture,
     modal.removeEventListener("click", closeModal)
-    modal.querySelector("#modalClose").removeEventListener("click", closeModal);
     modal.querySelector(".modal-content").removeEventListener("click", stopPropagation);
-
-    document.body.classList.remove("modal-open")
+    modal.querySelector("#modal-close").removeEventListener("click", closeModal);
+    //2: la class attribuée au body,
+    document.body.classList.remove("modal-open");
+    //3: les modifs de la seconde version de la modal.
+    resetModalState();
 }
-
 const stopPropagation = function (e) {
     e.stopPropagation()
 }
