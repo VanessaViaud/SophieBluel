@@ -72,22 +72,51 @@
 	</section>
 </div>
 	<section id="modal1" class="modal" style="display: none;">
-		<div class="modal-content">
-			<div class="modal-content-close">
-				<button id="modal-close"><i class="fa-solid fa-xmark"></i></button>
-			</div>
-			<h3 class="modal-title">Galerie Photo</h3>
-			<div class="gallery-modal">
-				<!--cf script-->
-			</div>
-			<div class="form-modal">
-				<!--cf script-->
-			</div>
-			<hr />
-			<div class="modal-footer">
-				<button class="modal-add-photo">Ajouter une photo</button>
+		<div class="modal-remove">
+			<div class="modal-content">
+				<div class="modal-content-close">
+					<button id="modal-close"><i class="fa-solid fa-xmark"></i></button>
+				</div>
+				<h3 class="modal-title">Galerie Photo</h3>
+				<div class="gallery-modal">
+					<!--cf script-->
+				</div>
+				<hr />
+				<div class="modal-footer">
+					<button class="modal-add-photo">Ajouter une photo</button>
+				</div>
 			</div>
 		</div>
+		<div class="modal-add-form">
+			<div class="modal-content-snd">
+				<div class="modal-content-close-back">
+					<button id="modal-back"><i class="fa-solid fa-arrow-left"></i></button>
+					<button id="modal-close-snd"><i class="fa-solid fa-xmark"></i></button>
+				</div>
+				<h3 class="modal-title">Ajout photo</h3>
+				<div class="form-modal">
+					<form action="#" method="post">
+							<div class="drop-area" id="id-drop-area">
+								<i class="fa-regular fa-image"></i>
+								<div class="button-container">
+									<input type="file" name="img" id="img-add-photo" accept="image/**">
+									<p class="ajouter-photo-button">+ Ajouter photo</p>
+								</div>
+								<p>jpg, png : 4mo max</p>
+							</div>
+							<label for="title-add-photo">Titre</label>
+							<input type="text" name="title" id="title-add-photo">
+							<label for="category-add-photo">Catégorie</label>
+							<select name="category" id="category-add-photo">
+							</select>
+					</form>
+				</div>
+				<hr />
+				<div class="modal-footer">
+					<input id="modal-valider" type="submit" value="Valider">
+				</div>
+			</div>
+		</div>		
 	</section>
 </main>
 <footer>

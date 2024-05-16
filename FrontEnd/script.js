@@ -13,7 +13,8 @@ async function getWorks() {
     createbutton(categories);
     generateGallery(works);
     generateGalleryModal(works);
-    renderEditionMode();}
+    renderEditionMode();
+    createSelect(categories)}
 
 //créer fonction qui génère les works (img + title)
 function generateGallery(works) {
@@ -181,144 +182,21 @@ function viderLocalStorage() {
     localStorage.removeItem("authToken");
 }
 
-//créer modifs de la modal quand on clique sur Ajouter une photo
-const buttonAddPhoto = document.querySelector(".modal-add-photo");
-
-buttonAddPhoto.addEventListener("click", function() {
-    const modalTitle = document.querySelector(".modal-title");
-    modalTitle.innerHTML = "Ajout photo";
-    
-    buttonAddPhoto.style.display = 'none';
-    
-    const galleryModalElement = document.querySelector(".gallery-modal");
-    galleryModalElement.style.display = 'none';
-
-    const formContentAddPhoto = document.querySelector(".form-modal");
-    const formAddPhoto = document.createElement("form");
-        formAddPhoto.action = "#";
-        formAddPhoto.method = "post";
-    const areaImgAddPhoto = document.createElement("div");
-        areaImgAddPhoto.className = "drop-area";
-        areaImgAddPhoto.id = "dropArea";
-        areaImgAddPhoto.innerHTML = '<i class="fa-regular fa-image"></i><br><p>jpg, png : 4mo max</p>';
-    const imgAddPhoto = document.createElement("input");
-        imgAddPhoto.type = "file";
-        imgAddPhoto.name = "img";
-        imgAddPhoto.id = "img-add-photo";
-        imgAddPhoto.accept = "image/**";
-        // imgAddPhoto.setAttribute("required");
-    const labelTitleAddPhoto = document.createElement("label");
-        labelTitleAddPhoto.for = "title-add-photo";
-        labelTitleAddPhoto.innerHTML = "Titre";
-    const titleAddPhoto = document.createElement("input");
-        titleAddPhoto.type = "text";
-        titleAddPhoto.name = "title";
-        titleAddPhoto.id = "title-add-photo";
-        // titleAddPhoto.setAttribute("required");
-    const labelCategoryAddPhoto = document.createElement("label");
-        labelCategoryAddPhoto.for = "category-add-photo";
-        labelCategoryAddPhoto.innerHTML = "Catégorie";
-    const categoryAddPhoto = document.createElement("select");
-        categoryAddPhoto.name = "category";
-        categoryAddPhoto.id = "category-add-photo";
-        // categoryAddPhoto.setAttribute("required");
-    const optionAddPhoto = document.createElement("option");
-        optionAddPhoto.value = "numéro de catégorie";
-        optionAddPhoto.innerHTML = "titre de catégorie";
-    const validationAddPhoto = document.createElement("input");
-        validationAddPhoto.value = "Valider";
-        validationAddPhoto.type = "submit";
-        validationAddPhoto.id = "modal-valider";
-
-    formContentAddPhoto.appendChild(formAddPhoto);
-    formAddPhoto.appendChild(areaImgAddPhoto);
-    areaImgAddPhoto.appendChild(imgAddPhoto);
-    formAddPhoto.appendChild(labelTitleAddPhoto);
-    formAddPhoto.appendChild(titleAddPhoto);
-    formAddPhoto.appendChild(labelCategoryAddPhoto);
-    formAddPhoto.appendChild(categoryAddPhoto);
-    categoryAddPhoto.appendChild(optionAddPhoto);
-    const footerModal = document.querySelector(".modal-footer");
-    footerModal.appendChild(validationAddPhoto);
-    
-});
-    
-// Autres opérations spécifiques pour la zone de chargement des photos
-// const dropArea = document.getElementById("dropArea");
-
-// //const eventNames = ["dragenter", "dragover", "dragleave", "drop"]
-
-// // Gérer le glisser-déposer de fichiers
-// dropArea.addEventListener("drop", handleDrop, false);
-
-// // Gérer le dépôt de fichiers
-// function handleDrop(e) {
-//   const dt = e.dataTransfer;
-//   const files = dt.files;
-
-//   handleFiles(files);
-// }
-
-// // Gérer les fichiers après le dépôt
-// function handleFiles(files) {
-//   for (let i = 0; i < files.length; i++) {
-//     const file = files[i];
-//     if (isImage(file)) {
-//       uploadImage(file);
-//     } else {
-//       alert("Veuillez sélectionner une image.");
-//     }
-//   }
-// }
-
-// // Vérifier si le fichier est une image
-// function isImage(file) {
-//   return /^image\//.test(file.type);
-// }
-
-// // Télécharger l'image
-// function uploadImage(file) {
-//   const reader = new FileReader();
-
-//   reader.onload = function(e) {
-//     const img = new Image();
-//     img.src = e.target.result;
-
-//     // Afficher l'image téléchargée
-//     dropArea.innerHTML = "";
-//     dropArea.appendChild(img);
-//   }
-
-//   reader.readAsDataURL(file);
-// }
-
-// Gérer le téléchargement de fichiers via l'input de type file
-// const fileInput = document.getElementById("fileInput");
-// fileInput.addEventListener("change", function() {
-//   handleFiles(this.files);
-// });
-
-
-//et une fonction pour annuler les effets des modifs quand on ferme la modal 
-// function resetModalState() {
-//     buttonAddPhoto.style.display = "";
-//     const galleryModalElement = document.querySelector(".gallery-modal");
-//     galleryModalElement.style.display = "";
-//     const formContentAddPhoto = document.querySelector(".form-modal");
-//     formContentAddPhoto.style.display = 'none';
-//     const modalTitle = document.querySelector(".modal-title");
-//     modalTitle.innerHTML = "Galerie photo";
-//     const inputInFooterModal = document.querySelector(".modal-footer input");
-//     inputInFooterModal.style.display = 'none';
-// }
 const stopPropagation = function (e) {
     e.stopPropagation()
 }
-//créer une fonction pour ouvrir la modal
+//créer une fonction pour ouvrir la modal où on supprime les projets
 function openModal (e) {
     e.preventDefault();
     const modal = document.querySelector("#modal1");
     modal.style.display = 'flex';
+    const modalSuppr = document.querySelector(".modal-remove");
+    modalSuppr.style.display = 'flex';
+    const modalAdd = document.querySelector(".modal-add-form");
+    modalAdd.style.display = 'none';
+    //ajouter l'écouter sur le bouton Ajouter photo pour ouvrir l'autre version de la modal
+    const modalAddPhoto = document.querySelector(".modal-add-photo");
+    modalAddPhoto.addEventListener("click", openModal2);
     //fermer la modal quand on clique dessus...
     modal.addEventListener("click", closeModal);
     //...sauf si on clique à l'intérieur
@@ -329,22 +207,62 @@ function openModal (e) {
     //et on ajoute une class au body pour empêcher le overlay scroll en arrière-plan
     document.body.classList.add("modal-open")
 }
+//créer une fonction pour ouvrir la modal où on ajoute des projets
+function openModal2 (e) {
+    e.preventDefault();
+    const modal = document.querySelector("#modal1");
+    modal.style.display = 'flex';
+    const modalSuppr = document.querySelector(".modal-remove");
+    modalSuppr.style.display = 'none';
+    const modalAdd = document.querySelector(".modal-add-form");
+    modalAdd.style.display = 'flex';
+    //fermer la modal quand on clique dessus...
+    modal.addEventListener("click", closeModal);
+    //...sauf si on clique à l'intérieur
+    modal.querySelector(".modal-content-snd").addEventListener("click", stopPropagation);
+    //fermer la modal quand on clique sur la croix
+    modal.querySelector("#modal-close-snd").addEventListener("click", closeModal);
+    //revenir en arrière quand on clique sur la flèche
+    modal.querySelector("#modal-back").addEventListener("click", openModal);
 
+    //et on ajoute une class au body pour empêcher le overlay scroll en arrière-plan
+    document.body.classList.add("modal-open")
+}
 //créer une fonction pour fermer la modal
 function closeModal (e) {
     const modal = document.querySelector("#modal1");
     e.preventDefault();
     modal.style.display = 'none';
+    const modalSuppr = document.querySelector(".modal-remove");
+    modalSuppr.style.display = 'none';
+    const modalAdd = document.querySelector(".modal-add-form");
+    modalAdd.style.display = 'none';
     //et on retire :
     //1: les écouteurs de cliques de fermeture,
     modal.removeEventListener("click", closeModal)
     modal.querySelector(".modal-content").removeEventListener("click", stopPropagation);
     modal.querySelector("#modal-close").removeEventListener("click", closeModal);
-    //2: la class attribuée au body,
+    //2: la class attribuée au body.
     document.body.classList.remove("modal-open");
-    //3: les modifs de la seconde version de la modal.
-    //resetModalState()
 }
+//créer fonction pour générer les catégories dans le select de la modal
+//générer mes boutons à partir des categories
+function createSelect(categories) {
+    const selectCategories = document.getElementById("category-add-photo");
 
+    // creer le tableau des categories dispo comme pour les filtres
+    const availableCategories = []
+
+    //générer les values à partir des categories et remplir le tableau des catégories dispo
+    for (let k = 0; k < categories.length; k++) {
+        const categorie = categories[k]; 
+        availableCategories.push(categorie.id);
+        const selectOption = document.createElement("option");
+        selectOption.value = categorie.name;
+        selectOption.innerText = categorie.name;
+
+        selectCategories.appendChild(selectOption);
+    }
+}
 
 

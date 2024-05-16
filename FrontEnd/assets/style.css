@@ -191,10 +191,13 @@ nav img {
 	display: flex;
 	align-items: center;	
 }
-#filters-buttons:hover,
-#filters-buttons:active {
+#filters-buttons:hover {
 	background-color: #1D6154;
 	color:white
+}
+#filters-buttons:active {
+	background-color: #1D6154 !important;
+	color:white !important
 }
 .gallery {
 	width: 100%;
@@ -205,7 +208,6 @@ nav img {
 }
 .gallery img {
 	width: 100%;
-
 }
 #contact,
 #login {
@@ -284,7 +286,8 @@ footer nav ul {
 	align-items: center;
 	justify-content: center;
 }
-.modal-content {
+.modal-content,
+.modal-content-snd {
 	display: flex;
 	top: 50%;
 	left: 50%;
@@ -303,6 +306,15 @@ footer nav ul {
 .modal-content-close {
 	display: flex;
     flex-direction: row-reverse;
+}
+.modal-content-close-back {
+	display: flex;
+	justify-content: space-between;
+}
+#modal-back {
+	border: none;
+	background-color: white;
+	font-size: larger;
 }
 .modal-title {
 	font-size: 26px;
@@ -346,7 +358,12 @@ footer nav ul {
 	font-size: 14px;
 	font-family: syne;
 }
-#modal-close {
+#modal-valider {
+	width: 237px;
+	background-color: #A7A7A7;
+}
+#modal-close,
+#modal-close-snd {
 	font-size: 24px;
 	border: none;
 	background-color: white;
@@ -362,7 +379,6 @@ footer nav ul {
 	flex-direction: column;
 	gap: 1em;
 	text-align: left;
-	margin-top:30px;
 	width: 420px;
 }
 .drop-area {
@@ -377,23 +393,37 @@ footer nav ul {
 	flex-direction: column;
 	justify-content: space-between;
 	text-align: center;
+	align-items: center;
 }
 .drop-area i {
 	color: #CBD6DC;
 	font-size: 68px;
 }
-#img-add-photo {
-	overflow: hidden;
-	width: 173px;
-	height: 36px;
-	position: absolute;
-	/* border-radius: 50px;
+.ajouter-photo-button {
+	border-radius: 50px;
 	font-family: Work Sans;
 	font-size: 14px;
 	color:#306685;
-	background-color: #CBD6DC; */
-	margin-top: 75px;
-	margin-left: 103px;
+	background-color: #CBD6DC;
+	height: 36px;
+	width: 173px;
+	border-radius: 50px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+.button-container {
+    position: relative;
+    display: inline-block;
+}
+#img-add-photo {
+	position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    cursor: pointer;
 }
 #title-add-photo,
 #category-add-photo {
@@ -403,15 +433,19 @@ footer nav ul {
 	box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.09);
 }
 .form-modal label {
-	margin: 2em 0 1em 0;
+	margin: 1em 0 0em 0;
 }
 .form-modal select {
 	height: 50px;
 	border: none;
 	box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.09);
 }
-.form-modal option {
+#category-add-photo,
+#title-add-photo {
 	font-family: Work Sans;
+	font-size: 14px;
+	color:#444444;
+	outline: none;
 }
 .modal-footer {
 	display: flex;
