@@ -74,7 +74,6 @@ function generateGalleryModal(works) {
 async function deleteWork(id, e) {
     e.preventDefault();
     const authToken = localStorage.getItem("authToken")
-    console.log("avant await fetch");
     const deleteResponse = await fetch ("http://localhost:5678/api/works/"+id, 
     {
         method: "DELETE",
@@ -87,6 +86,126 @@ async function deleteWork(id, e) {
     }
     return false;
 }
+// et ajouter des works
+document.addEventListener("DOMContentLoaded", () => {
+    const form = document.getElementById("upload-form");
+    const dropArea = document.getElementById("id-drop-area");
+    const imgInput = document.getElementById("img-add-photo");
+    const miniatureImg = document.getElementById("miniature");
+    const errorMessage = document.getElementById("error-message");
+    const successMessage = document.getElementById("success-message");
+
+    // Empêcher le comportement par défaut des événements de glisser-déposer
+    ["dragenter", "dragover", "dragleave", "drop"].forEach(eventName => {
+        dropArea.addEventListener(eventName, preventDefaults, false);
+        document.body.addEventListener(eventName, preventDefaults, false);
+    });
+
+    // Ajouter des classes pour les événements de glisser-déposer
+    ["dragenter", "dragover"].forEach(eventName => {
+        dropArea.addEventListener(eventName, () => dropArea.classList.add("dragover"), false);
+    });
+
+    ["dragleave", "drop"].forEach(eventName => {
+        dropArea.addEventListener(eventName, () => dropArea.classList.remove("dragover"), false);
+    });
+
+    // Gérer le dépôt des fichiers
+    dropArea.addEventListener("drop", handleDrop, false);
+
+    // Gérer le changement du fichier sélectionné
+    imgInput.addEventListener("change", handleFiles, false);
+   
+    const addFile = document.getElementById("modal-valider")
+    addFile.addEventListener("click", async function(e) {
+        e.preventDefault();
+
+        const file = imgInput.files[0];
+        const title = document.getElementById("title-add-photo").value;
+        const category = parseInt(document.getElementById("category-add-photo").value, 10);
+
+        errorMessage.textContent = "";
+        successMessage.textContent = "";
+
+        if (!file || !title || isNaN(category)) {
+            errorMessage.textContent = "Tous les champs doivent être complétés.";
+            return;
+        }
+
+        if (file.size > 4 * 1024 * 1024) {
+            errorMessage.textContent = "La taille du fichier ne doit pas dépasser 4 Mo.";
+            return;
+        }
+
+        const formData = new FormData();
+        formData.append("image", file);
+        formData.append("title", title);
+        formData.append("category", category);
+
+        const authToken = localStorage.getItem("authToken");
+
+        try {
+            const response = await fetch("http://localhost:5678/api/works", {
+                method: "POST",
+                headers: {
+                    "Authorization": "Bearer " + authToken,
+                   // "Content-Type": "multipart/form-data"
+                },
+                body: formData
+            });
+
+            if (response.ok) {
+                successMessage.textContent = "Votre nouveau projet a bien été ajouté!";
+                form.reset();
+                const img = document.getElementById("miniature");
+                img.style.display = 'none';
+                const dropAreaAfter = document.querySelector(".before-img-drop");
+                dropAreaAfter.style.display = 'flex';
+                return true;
+            } else {
+                const errorData = await response.json();
+                errorMessage.textContent = `Erreur: ${errorData.message}`;
+                return false;
+            }
+        } catch (error) {
+            errorMessage.textContent = "Une erreur s'est produite.";
+            console.error("Erreur:", error);
+            return false;
+        }
+    });
+
+    function preventDefaults(e) {
+        e.preventDefault();
+        e.stopPropagation();
+    }
+
+    function handleDrop(event) {
+        const dt = event.dataTransfer;
+        const files = dt.files;
+        if (files.length > 0) {
+            imgInput.files = files;
+            handleFiles();
+        }
+    }
+
+    function handleFiles() {
+        const dropAreaAfter = document.querySelector(".before-img-drop");
+        const file = imgInput.files[0];
+        if (file) {
+            miniatureImg.innerHTML = "" // Vider le conteneur de prévisualisation
+            const reader = new FileReader();
+            reader.onload = function(event) {
+                const img = document.createElement("img");
+                img.src = event.target.result;
+                miniatureImg.appendChild(img);
+                dropAreaAfter.style.display = 'none';
+                miniatureImg.style.display = 'block';
+            };
+            reader.readAsDataURL(file);
+        }
+    }
+});
+
 
 //créer fonction filtre selon categorie
 // definition categorie : Array contenant toutes les categoryId.
@@ -119,7 +238,7 @@ function createbutton(categories) {
     // creer le bouton "tous"
     const allButtonElement = document.createElement("button");
     allButtonElement.innerText = "Tous"; 
-    allButtonElement.id = "filters-buttons"; 
+    allButtonElement.className = "filters-buttons";
     filtersElement.appendChild(allButtonElement);
 
     //creer les autres boutons à partir des categories et remplir le tableau des catégories dispo
@@ -128,8 +247,10 @@ function createbutton(categories) {
         availableCategories.push(categorie.id);
         const buttonElement = document.createElement("button");
         buttonElement.innerText = categorie.name; 
-        buttonElement.id = "filters-buttons"; 
+        buttonElement.className = "filters-buttons"; 
         buttonElement.addEventListener("click", function() {
+            resetFilteredButtonStyle();
+            buttonElement.className = "filters-button-clicked filters-buttons";
             filterGallery([categorie.id]);
         });
         filtersElement.appendChild(buttonElement);
@@ -137,9 +258,17 @@ function createbutton(categories) {
     }
     //creer le filtre du bouton "tous" avec le nouveau tableau de l'ensemble des catégories dispo
     allButtonElement.addEventListener("click", function() {
+        resetFilteredButtonStyle();
+        allButtonElement.className = "filters-button-clicked filters-buttons";
         filterGallery(availableCategories);
     });
 
+}
+function resetFilteredButtonStyle(){
+    const buttons = document.querySelectorAll(".filters-buttons");
+    for (let i = 0; i < buttons.length; i++) {
+        buttons[i].className = "filters-buttons";
+    }
 }
 getWorks();
 
@@ -246,19 +375,14 @@ function closeModal (e) {
     document.body.classList.remove("modal-open");
 }
 //créer fonction pour générer les catégories dans le select de la modal
-//générer mes boutons à partir des categories
 function createSelect(categories) {
     const selectCategories = document.getElementById("category-add-photo");
-
-    // creer le tableau des categories dispo comme pour les filtres
-    const availableCategories = []
 
     //générer les values à partir des categories et remplir le tableau des catégories dispo
     for (let k = 0; k < categories.length; k++) {
         const categorie = categories[k]; 
-        availableCategories.push(categorie.id);
         const selectOption = document.createElement("option");
-        selectOption.value = categorie.name;
+        selectOption.value = categorie.id;
         selectOption.innerText = categorie.name;
 
         selectCategories.appendChild(selectOption);

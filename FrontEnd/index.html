@@ -81,8 +81,8 @@
 				<div class="gallery-modal">
 					<!--cf script-->
 				</div>
-				<hr />
 				<div class="modal-footer">
+					<hr />
 					<button class="modal-add-photo">Ajouter une photo</button>
 				</div>
 			</div>
@@ -95,25 +95,30 @@
 				</div>
 				<h3 class="modal-title">Ajout photo</h3>
 				<div class="form-modal">
-					<form action="#" method="post">
-							<div class="drop-area" id="id-drop-area">
+					<form id="upload-form" action="#" method="post" enctype="multipart/form-data">
+						<div class="drop-area" id="id-drop-area">
+							<div id="miniature"></div>
+							<div class="before-img-drop">
 								<i class="fa-regular fa-image"></i>
 								<div class="button-container">
-									<input type="file" name="img" id="img-add-photo" accept="image/**">
+									<input type="file" name="img" id="img-add-photo" accept="image/*" required>
 									<p class="ajouter-photo-button">+ Ajouter photo</p>
 								</div>
 								<p>jpg, png : 4mo max</p>
 							</div>
-							<label for="title-add-photo">Titre</label>
-							<input type="text" name="title" id="title-add-photo">
-							<label for="category-add-photo">Catégorie</label>
-							<select name="category" id="category-add-photo">
-							</select>
+						</div>
+						<label for="title-add-photo">Titre</label>
+						<input type="text" name="title" id="title-add-photo" required>
+						<label for="category-add-photo">Catégorie</label>
+						<select name="category" id="category-add-photo" required>
+						</select>
+						<hr />
+						<div class="modal-footer">
+						<button id="modal-valider" type="submit">Valider</button>
+						</div>
 					</form>
-				</div>
-				<hr />
-				<div class="modal-footer">
-					<input id="modal-valider" type="submit" value="Valider">
+					<p id="error-message" style="color: red;"></p>
+					<p id="success-message" style="color: green;"></p>
 				</div>
 			</div>
 		</div>		
