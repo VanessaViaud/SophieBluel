@@ -394,9 +394,6 @@ footer nav ul {
 	border-radius: 3px;
 	display: flex;
 	flex-direction: column;
-	justify-content: space-between;
-	text-align: center;
-	align-items: center;
 }
 .drop-area i {
 	color: #CBD6DC;
@@ -405,6 +402,17 @@ footer nav ul {
 .drop-area.dragover {
     border-color: #333;
     background-color: #eee;
+}
+.before-img-drop {
+	display: flex;
+    flex-direction: column;
+	align-items: center;
+	padding: 20px 0 20px 0;;
+	gap: 7px;
+}
+#miniature {
+	display: flex;
+	justify-content: center;
 }
 #miniature img {
     z-index: 2;

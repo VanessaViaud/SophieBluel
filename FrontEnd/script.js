@@ -16,7 +16,7 @@ async function getWorks() {
     renderEditionMode();
     createSelect(categories)}
 
-//créer fonction qui génère les works (img + title)
+//fonction qui génère les works (img + title)
 function generateGallery(works) {
     galleryElement.innerHTML = "";
 
@@ -35,7 +35,7 @@ function generateGallery(works) {
     }
 }
 
-//créer fonction qui génère les works dans la modal
+//fonction qui génère les works dans la modal
 function generateGalleryModal(works) {
     const galleryModalElement = document.querySelector(".gallery-modal");
 
@@ -86,14 +86,12 @@ async function deleteWork(id, e) {
     }
     return false;
 }
-// et ajouter des works
+// et fonction pour ajouter des works
 document.addEventListener("DOMContentLoaded", () => {
     const form = document.getElementById("upload-form");
     const dropArea = document.getElementById("id-drop-area");
     const imgInput = document.getElementById("img-add-photo");
     const miniatureImg = document.getElementById("miniature");
-    const errorMessage = document.getElementById("error-message");
-    const successMessage = document.getElementById("success-message");
 
     // Empêcher le comportement par défaut des événements de glisser-déposer
     ["dragenter", "dragover", "dragleave", "drop"].forEach(eventName => {
@@ -124,16 +122,13 @@ document.addEventListener("DOMContentLoaded", () => {
         const title = document.getElementById("title-add-photo").value;
         const category = parseInt(document.getElementById("category-add-photo").value, 10);
 
-        errorMessage.textContent = "";
-        successMessage.textContent = "";
-
         if (!file || !title || isNaN(category)) {
-            errorMessage.textContent = "Tous les champs doivent être complétés.";
+            alert("Tous les champs doivent être complétés.");
             return;
         }
 
         if (file.size > 4 * 1024 * 1024) {
-            errorMessage.textContent = "La taille du fichier ne doit pas dépasser 4 Mo.";
+            alert("La taille du fichier ne doit pas dépasser 4 Mo.");
             return;
         }
 
@@ -149,13 +144,12 @@ document.addEventListener("DOMContentLoaded", () => {
                 method: "POST",
                 headers: {
                     "Authorization": "Bearer " + authToken,
-                   // "Content-Type": "multipart/form-data"
                 },
                 body: formData
             });
 
             if (response.ok) {
-                successMessage.textContent = "Votre nouveau projet a bien été ajouté!";
+                alert("Votre nouveau projet a bien été ajouté.");
                 form.reset();
                 const img = document.getElementById("miniature");
                 img.style.display = 'none';
@@ -164,11 +158,11 @@ document.addEventListener("DOMContentLoaded", () => {
                 return true;
             } else {
                 const errorData = await response.json();
-                errorMessage.textContent = `Erreur: ${errorData.message}`;
+                alert(`Erreur: ${errorData.message}`);
                 return false;
             }
         } catch (error) {
-            errorMessage.textContent = "Une erreur s'est produite.";
+            alert ("Une erreur s'est produite.");
             console.error("Erreur:", error);
             return false;
         }
@@ -192,20 +186,19 @@ document.addEventListener("DOMContentLoaded", () => {
         const dropAreaAfter = document.querySelector(".before-img-drop");
         const file = imgInput.files[0];
         if (file) {
-            miniatureImg.innerHTML = "" // Vider le conteneur de prévisualisation
+            miniatureImg.innerHTML = ""
             const reader = new FileReader();
             reader.onload = function(event) {
                 const img = document.createElement("img");
                 img.src = event.target.result;
                 miniatureImg.appendChild(img);
                 dropAreaAfter.style.display = 'none';
-                miniatureImg.style.display = 'block';
+                miniatureImg.style.display = 'flex';
             };
             reader.readAsDataURL(file);
         }
     }
 });
-
 
 //créer fonction filtre selon categorie
 // definition categorie : Array contenant toutes les categoryId.
@@ -306,7 +299,7 @@ function renderEditionMode() {
         })
     }
 }
-//créer une fonction pour vider le local storage quand on click sur logout
+//fonction pour vider le local storage quand on click sur logout
 function viderLocalStorage() {
     localStorage.removeItem("authToken");
 }
@@ -314,7 +307,8 @@ function viderLocalStorage() {
 const stopPropagation = function (e) {
     e.stopPropagation()
 }
-//créer une fonction pour ouvrir la modal où on supprime les projets
+
+//fonction pour ouvrir la modal où on supprime les projets
 function openModal (e) {
     e.preventDefault();
     const modal = document.querySelector("#modal1");
@@ -323,7 +317,7 @@ function openModal (e) {
     modalSuppr.style.display = 'flex';
     const modalAdd = document.querySelector(".modal-add-form");
     modalAdd.style.display = 'none';
-    //ajouter l'écouter sur le bouton Ajouter photo pour ouvrir l'autre version de la modal
+    //ajouter l'écouteur sur le bouton Ajouter photo pour ouvrir l'autre version de la modal
     const modalAddPhoto = document.querySelector(".modal-add-photo");
     modalAddPhoto.addEventListener("click", openModal2);
     //fermer la modal quand on clique dessus...
@@ -367,18 +361,18 @@ function closeModal (e) {
     const modalAdd = document.querySelector(".modal-add-form");
     modalAdd.style.display = 'none';
     //et on retire :
-    //1: les écouteurs de cliques de fermeture,
+    //1: les écouteurs de clics de fermeture,
     modal.removeEventListener("click", closeModal)
     modal.querySelector(".modal-content").removeEventListener("click", stopPropagation);
     modal.querySelector("#modal-close").removeEventListener("click", closeModal);
-    //2: la class attribuée au body.
+    //2: la class du body.
     document.body.classList.remove("modal-open");
 }
-//créer fonction pour générer les catégories dans le select de la modal
+//fonction pour générer les catégories dans le select de la modal
 function createSelect(categories) {
     const selectCategories = document.getElementById("category-add-photo");
 
-    //générer les values à partir des categories et remplir le tableau des catégories dispo
+    //générer les values à partir des categories
     for (let k = 0; k < categories.length; k++) {
         const categorie = categories[k]; 
         const selectOption = document.createElement("option");
