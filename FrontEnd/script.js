@@ -92,6 +92,9 @@ document.addEventListener("DOMContentLoaded", () => {
     const dropArea = document.getElementById("id-drop-area");
     const imgInput = document.getElementById("img-add-photo");
     const miniatureImg = document.getElementById("miniature");
+    const titleInput = document.getElementById("title-add-photo");
+    const categorySelect = document.getElementById("category-add-photo");
+    const addFileButton = document.getElementById("modal-valider");
 
     // Empêcher le comportement par défaut des événements de glisser-déposer
     ["dragenter", "dragover", "dragleave", "drop"].forEach(eventName => {
@@ -197,6 +200,27 @@ document.addEventListener("DOMContentLoaded", () => {
             };
             reader.readAsDataURL(file);
         }
+        validerButtonInGreen();
+    }
+
+    //et passer le bouton au vert quand les champs sont remplis
+    //1-écouter le remplissage du formulaire
+    imgInput.addEventListener("change", validerButtonInGreen);
+    titleInput.addEventListener("input", validerButtonInGreen);
+    categorySelect.addEventListener("change", validerButtonInGreen);
+
+    //2-changer la couleur
+    function validerButtonInGreen () {
+        const file = imgInput.files[0];
+        const title = titleInput.value.trim();
+        const category = categorySelect.value;
+
+        if (file && title && category) {
+            addFileButton.style.backgroundColor = "#1D6154";
+        }  
+        else {
+                addFileButton.style.backgroundColor ="";
+            }
     }
 });
 
