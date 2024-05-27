@@ -1,8 +1,8 @@
-//variables globales
+// Variables globales
 let works = [];
 const galleryElement = document.querySelector(".gallery");
 
-//appel API categories et works
+// Appel API categories et works
 async function getWorks() {
     const categoriesResponse = await fetch("http://localhost:5678/api/categories");
     const categories = await categoriesResponse.json();
@@ -14,9 +14,10 @@ async function getWorks() {
     generateGallery(works);
     generateGalleryModal(works);
     renderEditionMode();
-    createSelect(categories)}
+    createSelect(categories);
+}
 
-//fonction qui génère les works (img + title)
+// Fonction qui génère les works (img + title)
 function generateGallery(works) {
     galleryElement.innerHTML = "";
 
@@ -35,9 +36,11 @@ function generateGallery(works) {
     }
 }
 
-//fonction qui génère les works dans la modal
+// Fonction qui génère les works dans la modal
 function generateGalleryModal(works) {
     const galleryModalElement = document.querySelector(".gallery-modal");
+
+    galleryModalElement.innerHTML = "";  
 
     for (let i = 0; i < works.length; i++) {
         const figure = works[i];
@@ -53,188 +56,204 @@ function generateGalleryModal(works) {
             e.preventDefault();
            // si deleteWork a bien marché
             if (deleteWork(figure.id, e)) {
-                //on supprime le work de la modal
+                // on supprime le work de la modal
                 figureElement.parentNode.removeChild(figureElement);
-                //et on supprime en dessous aussi
+                // et on supprime en dessous aussi
                 const workFigure = document.getElementById("work-" + figure.id);
                 workFigure.parentNode.removeChild(workFigure);
             } else {
-                //message d'erreur
+                // message d'erreur
                 alert("Une erreur s'est produite. Veuillez réessayer ultérieurement.");
-            };
- 
+            }
         });
+
         galleryModalElement.appendChild(figureElement);
         figureElement.appendChild(trashElement);
         figureElement.appendChild(imageElement);
     }
 }
 
-//fonction pour supprimer un work à partir de l'id
+// Fonction pour supprimer un work à partir de l'id
 async function deleteWork(id, e) {
     e.preventDefault();
     const authToken = localStorage.getItem("authToken")
-    const deleteResponse = await fetch ("http://localhost:5678/api/works/"+id, 
-    {
+    const deleteResponse = await fetch("http://localhost:5678/api/works/" + id, {
         method: "DELETE",
         headers: {
             Authorization: "Bearer " + authToken
         },
     });
-    if(deleteResponse.ok) {
+    if (deleteResponse.ok) {
         return true;
     }
     return false;
 }
-// et fonction pour ajouter des works
-document.addEventListener("DOMContentLoaded", () => {
-    const form = document.getElementById("upload-form");
-    const dropArea = document.getElementById("id-drop-area");
-    const imgInput = document.getElementById("img-add-photo");
-    const miniatureImg = document.getElementById("miniature");
-    const titleInput = document.getElementById("title-add-photo");
-    const categorySelect = document.getElementById("category-add-photo");
-    const addFileButton = document.getElementById("modal-valider");
 
-    // Empêcher le comportement par défaut des événements de glisser-déposer
-    ["dragenter", "dragover", "dragleave", "drop"].forEach(eventName => {
-        dropArea.addEventListener(eventName, preventDefaults, false);
-        document.body.addEventListener(eventName, preventDefaults, false);
-    });
+// Fonction pour ajouter des works
+const form = document.getElementById("upload-form");
+const dropArea = document.getElementById("id-drop-area");
+const imgInput = document.getElementById("img-add-photo");
+const miniatureImg = document.getElementById("miniature");
+const titleInput = document.getElementById("title-add-photo");
+const categorySelect = document.getElementById("category-add-photo");
+const addFileButton = document.getElementById("modal-valider");
 
-    // Ajouter des classes pour les événements de glisser-déposer
-    ["dragenter", "dragover"].forEach(eventName => {
-        dropArea.addEventListener(eventName, () => dropArea.classList.add("dragover"), false);
-    });
+// on écoute la sélection du fichier
+imgInput.addEventListener("change", addMiniature, false);
 
-    ["dragleave", "drop"].forEach(eventName => {
-        dropArea.addEventListener(eventName, () => dropArea.classList.remove("dragover"), false);
-    });
+addFileButton.addEventListener("click", async function addWork(e) {
+    e.preventDefault();
 
-    // Gérer le dépôt des fichiers
-    dropArea.addEventListener("drop", handleDrop, false);
+    const file = imgInput.files[0];
+    const title = titleInput.value;
+    const category = parseInt(categorySelect.value, 10);
 
-    // Gérer le changement du fichier sélectionné
-    imgInput.addEventListener("change", handleFiles, false);
-   
-    const addFile = document.getElementById("modal-valider")
-    addFile.addEventListener("click", async function(e) {
-        e.preventDefault();
-
-        const file = imgInput.files[0];
-        const title = document.getElementById("title-add-photo").value;
-        const category = parseInt(document.getElementById("category-add-photo").value, 10);
-
-        if (!file || !title || isNaN(category)) {
-            alert("Tous les champs doivent être complétés.");
-            return;
-        }
-
-        if (file.size > 4 * 1024 * 1024) {
-            alert("La taille du fichier ne doit pas dépasser 4 Mo.");
-            return;
-        }
-
-        const formData = new FormData();
-        formData.append("image", file);
-        formData.append("title", title);
-        formData.append("category", category);
-
-        const authToken = localStorage.getItem("authToken");
-
-        try {
-            const response = await fetch("http://localhost:5678/api/works", {
-                method: "POST",
-                headers: {
-                    "Authorization": "Bearer " + authToken,
-                },
-                body: formData
-            });
-
-            if (response.ok) {
-                alert("Votre nouveau projet a bien été ajouté.");
-                form.reset();
-                const img = document.getElementById("miniature");
-                img.style.display = 'none';
-                const dropAreaAfter = document.querySelector(".before-img-drop");
-                dropAreaAfter.style.display = 'flex';
-                return true;
-            } else {
-                const errorData = await response.json();
-                alert(`Erreur: ${errorData.message}`);
-                return false;
-            }
-        } catch (error) {
-            alert ("Une erreur s'est produite.");
-            console.error("Erreur:", error);
-            return false;
-        }
-    });
-
-    function preventDefaults(e) {
-        e.preventDefault();
-        e.stopPropagation();
+    if (!file || !title || isNaN(category)) {
+        alert("Tous les champs doivent être complétés.");
+        return;
     }
 
-    function handleDrop(event) {
-        const dt = event.dataTransfer;
-        const files = dt.files;
-        if (files.length > 0) {
-            imgInput.files = files;
-            handleFiles();
-        }
+    if (file.size > 4 * 1024 * 1024) {
+        alert("La taille du fichier ne doit pas dépasser 4 Mo.");
+        return;
     }
 
-    function handleFiles() {
-        const dropAreaAfter = document.querySelector(".before-img-drop");
-        const file = imgInput.files[0];
-        if (file) {
-            miniatureImg.innerHTML = ""
-            const reader = new FileReader();
-            reader.onload = function(event) {
-                const img = document.createElement("img");
-                img.src = event.target.result;
-                miniatureImg.appendChild(img);
-                dropAreaAfter.style.display = 'none';
-                miniatureImg.style.display = 'flex';
-            };
-            reader.readAsDataURL(file);
+    const formData = new FormData();
+    formData.append("image", file);
+    formData.append("title", title);
+    formData.append("category", category);
+
+    const authToken = localStorage.getItem("authToken");
+
+    try {
+        const response = await fetch("http://localhost:5678/api/works", {
+            method: "POST",
+            headers: {
+                "Authorization": "Bearer " + authToken,
+            },
+            body: formData
+        });
+
+        if (response.ok) {
+            const newWork = await response.json();
+            works.push(newWork); // Ajoute le nouveau work 
+
+            // et mise à jour de la galerie et de la modal
+            updateGallery(newWork);
+            updateGalleryModal(newWork);
+
+            alert("Votre nouveau projet a bien été ajouté.");
+            form.reset();
+            miniatureImg.style.display = 'none';
+            const dropAreaAfter = document.querySelector(".before-img-drop");
+            dropAreaAfter.style.display = 'flex';
+        } else {
+            const errorData = await response.json();
+            alert(`Erreur: ${errorData.message}`);
         }
-        validerButtonInGreen();
-    }
-
-    //et passer le bouton au vert quand les champs sont remplis
-    //1-écouter le remplissage du formulaire
-    imgInput.addEventListener("change", validerButtonInGreen);
-    titleInput.addEventListener("input", validerButtonInGreen);
-    categorySelect.addEventListener("change", validerButtonInGreen);
-
-    //2-changer la couleur
-    function validerButtonInGreen () {
-        const file = imgInput.files[0];
-        const title = titleInput.value.trim();
-        const category = categorySelect.value;
-
-        if (file && title && category) {
-            addFileButton.style.backgroundColor = "#1D6154";
-        }  
-        else {
-                addFileButton.style.backgroundColor ="";
-            }
+    } catch (error) {
+        alert("Une erreur s'est produite.");
+        console.error("Erreur:", error);
     }
 });
 
-//créer fonction filtre selon categorie
+function updateGallery(work) {
+    const figureElement = document.createElement("figure");
+    figureElement.id = "work-" + work.id;
+    const imageElement = document.createElement("img");
+    imageElement.src = work.imageUrl;
+    const nomElement = document.createElement("figcaption");
+    nomElement.innerText = work.title;
+
+    galleryElement.appendChild(figureElement);
+    figureElement.appendChild(imageElement);
+    figureElement.appendChild(nomElement);
+}
+
+function updateGalleryModal(work) {
+    const galleryModalElement = document.querySelector(".gallery-modal");
+
+    const figureElement = document.createElement("figure");
+    figureElement.id = "modal-work-" + work.id;
+    const imageElement = document.createElement("img");
+    imageElement.src = work.imageUrl;
+
+    const trashElement = document.createElement("button");
+    trashElement.className = "modal-trash-can";
+    trashElement.innerHTML = '<i class="fa-solid fa-trash-can"></i>';
+    trashElement.addEventListener("click", function (e) {
+        e.preventDefault();
+        // si deleteWork a bien marché
+        if (deleteWork(work.id, e)) {
+            // on supprime le work de la modal
+            figureElement.parentNode.removeChild(figureElement);
+            // et on supprime en dessous aussi
+            const workFigure = document.getElementById("work-" + work.id);
+            workFigure.parentNode.removeChild(workFigure);
+        } else {
+            // message d'erreur
+            alert("Une erreur s'est produite. Veuillez réessayer ultérieurement.");
+        }
+    });
+
+    galleryModalElement.appendChild(figureElement);
+    figureElement.appendChild(trashElement);
+    figureElement.appendChild(imageElement);
+}
+
+function preventDefaults(e) {
+    e.preventDefault();
+    e.stopPropagation();
+}
+
+function addMiniature() {
+    const dropAreaAfter = document.querySelector(".before-img-drop");
+    const file = imgInput.files[0];
+    if (file) {
+        miniatureImg.innerHTML = "";
+        const reader = new FileReader();
+        reader.onload = function (event) {
+            const img = document.createElement("img");
+            img.src = event.target.result;
+            miniatureImg.appendChild(img);
+            dropAreaAfter.style.display = "none";
+            miniatureImg.style.display = "flex";
+        };
+        reader.readAsDataURL(file);
+    }
+    validerButtonInGreen();
+}
+
+//et passer le bouton au vert quand les champs sont remplis
+//1-écouter le remplissage du formulaire
+imgInput.addEventListener("change", validerButtonInGreen);
+titleInput.addEventListener("input", validerButtonInGreen);
+categorySelect.addEventListener("change", validerButtonInGreen);
+
+//2-changer la couleur
+function validerButtonInGreen () {
+    const file = imgInput.files[0];
+    const title = titleInput.value.trim();
+    const category = categorySelect.value;
+
+    if (file && title && category) {
+        addFileButton.style.backgroundColor = "#1D6154";
+    }  
+    else {
+            addFileButton.style.backgroundColor ="";
+        }
+};
+
+//fonction filtre selon categorie
 // definition categorie : Array contenant toutes les categoryId.
 // Exemple: [1,2,3]
 function filterGallery(categorie) { 
-    // 0: vider la gallery générée à l'ouverture de la page
     galleryElement.innerHTML = "";
 
-    // 1: récupérer nos works
+    //récupérer nos works
     let filteredWorks = [];
 
-    // 2: filter nos works par rapport à la categoryId donnée en entrée
+    //filtrer nos works par rapport à la categoryId donnée en entrée
     let currentWork;
     for (let i = 0; i < works.length; i++) {
         currentWork = works[i];
@@ -242,7 +261,7 @@ function filterGallery(categorie) {
             filteredWorks.push(currentWork);
         }
     }
-    // 3: rappeler generateGallery avec notre nouveau tableau de works
+    //rappeler generateGallery avec notre nouveau tableau de works
     generateGallery(filteredWorks);
 }
 //générer mes boutons à partir des categories
@@ -271,7 +290,6 @@ function createbutton(categories) {
             filterGallery([categorie.id]);
         });
         filtersElement.appendChild(buttonElement);
-        
     }
     //creer le filtre du bouton "tous" avec le nouveau tableau de l'ensemble des catégories dispo
     allButtonElement.addEventListener("click", function() {
@@ -281,6 +299,7 @@ function createbutton(categories) {
     });
 
 }
+//fonction reset de la couleur de bouton cliqué
 function resetFilteredButtonStyle(){
     const buttons = document.querySelectorAll(".filters-buttons");
     for (let i = 0; i < buttons.length; i++) {
@@ -358,11 +377,11 @@ function openModal (e) {
 function openModal2 (e) {
     e.preventDefault();
     const modal = document.querySelector("#modal1");
-    modal.style.display = 'flex';
+    modal.style.display = "flex";
     const modalSuppr = document.querySelector(".modal-remove");
-    modalSuppr.style.display = 'none';
+    modalSuppr.style.display = "none";
     const modalAdd = document.querySelector(".modal-add-form");
-    modalAdd.style.display = 'flex';
+    modalAdd.style.display = "flex";
     //fermer la modal quand on clique dessus...
     modal.addEventListener("click", closeModal);
     //...sauf si on clique à l'intérieur
@@ -379,11 +398,11 @@ function openModal2 (e) {
 function closeModal (e) {
     const modal = document.querySelector("#modal1");
     e.preventDefault();
-    modal.style.display = 'none';
+    modal.style.display = "none";
     const modalSuppr = document.querySelector(".modal-remove");
-    modalSuppr.style.display = 'none';
+    modalSuppr.style.display = "none";
     const modalAdd = document.querySelector(".modal-add-form");
-    modalAdd.style.display = 'none';
+    modalAdd.style.display = "none";
     //et on retire :
     //1: les écouteurs de clics de fermeture,
     modal.removeEventListener("click", closeModal)
