@@ -10,7 +10,7 @@ async function getWorks() {
     const worksResponse = await fetch("http://localhost:5678/api/works");
     works = await worksResponse.json();
 
-    createbutton(categories);
+    createButton(categories);
     generateGallery(works);
     generateGalleryModal(works);
     renderEditionMode();
@@ -265,7 +265,7 @@ function filterGallery(categorie) {
     generateGallery(filteredWorks);
 }
 //générer mes boutons à partir des categories
-function createbutton(categories) {
+function createButton(categories) {
     const filtersElement = document.querySelector(".filters");
 
     // creer le tableau des categories dispo
